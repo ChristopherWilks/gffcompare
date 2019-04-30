@@ -97,7 +97,7 @@ bool checkFasta=false;
 bool tmapFiles=true;
 //controls by how much distance exon/intron coordinates
 //can be off and still count as an approximate match
-int fuzz_length = 40;
+int fuzz_length = 20;
 //ref gene_id or gene_name values are separated by '|' (pipe character) when
 //appended to the original gene_id
 //gene_name values are separated by ',' (comma) in the gene_name attribute
