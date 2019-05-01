@@ -433,11 +433,11 @@ bool tMatch(GffObj& a, GffObj& b, int& ovlen, bool relaxed_singleExonMatch, bool
 			        (b.start>=a.start && b.end<=a.end && b.covlen>=a.covlen*0.9));
 		}
 	}
-	if ( a.exons[imax]->start<b.exons[0]->end ||
-		b.exons[jmax]->start<a.exons[0]->end )
+	if ( a.exons[imax]->end < b.exons[0]->start ||
+		b.exons[jmax]->end < a.exons[0]->start )
 		return false; //intron chains do not overlap at all
 	//check intron overlaps
-	ovlen=a.exons[0]->end-(GMAX(a.start,b.start))+1;
+	ovlen=a.exons[0]->end - (GMAX(a.start,b.start))+1;
 	ovlen+=(GMIN(a.end,b.end))-a.exons.Last()->start;
 	for (int i=1;i<=imax;i++) {
 		if (i<imax) ovlen+=a.exons[i]->len();
