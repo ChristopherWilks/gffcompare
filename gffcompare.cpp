@@ -612,9 +612,11 @@ bool ichainMatch(GffObj* t, GffObj* r, bool& exonMatch, int fuzz=0) {
     }
   //if we made it here, we have matching intron chains up to MIN(imax,jmax)
   if (!exmism) {
+            //CW UPDATE 20190501 dont care about exons anymore as long as introns match
           //check terminal exons:
-          exonMatch = ( abs((int)(r->exons[0]->start - t->exons[0]->start))<=fuzz &&
-               abs((int)(r->exons[imax]->end - t->exons[jmax]->end))<=fuzz );
+          //exonMatch = ( abs((int)(r->exons[0]->start - t->exons[0]->start))<=fuzz &&
+          //     abs((int)(r->exons[imax]->end - t->exons[jmax]->end))<=fuzz );
+          exonMatch = true;
           }
         // else exonMatch is false
   return true;
@@ -893,6 +895,7 @@ void compareLoci2R(GList<GLocus>& loci, GList<GSuperLocus>& cmpdata,
               //this make sense for the partial fragments we get from PB & Nanopore
               bool exonMatch2 = false;
 			  if (ichainMatch(super->qmrnas[i],super->rmrnas[j],exonMatch, fuzz_length) || ichainMatch(super->rmrnas[j],super->qmrnas[i],exonMatch2, fuzz_length)) {
+			  //if (ichainMatch(super->qmrnas[i],super->rmrnas[j],exonMatch, fuzz_length)) {
                       //printf("made it to ichainMatch inner\n");
 				  //NB: also accepts the possibility that ref's i-chain be a subset of qry's i-chain
 				  super->qmrnas[i]->udata|=1;
