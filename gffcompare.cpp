@@ -888,7 +888,11 @@ void compareLoci2R(GList<GLocus>& loci, GList<GSuperLocus>& cmpdata,
           {
 			  if (amatched_refs[j]>0) continue; //this reference already counted as a TP fuzzy match
 			  if (super->qmrnas[i]->udata & 1) continue; //fuzzy match already found
-			  if (ichainMatch(super->qmrnas[i],super->rmrnas[j],exonMatch, fuzz_length)) {
+              //run twice to allow for either ichain to be a subchain of the other
+              //CW UPDATE 20190501 changed this to allow for q's intron chain to be a SUB-chain of r's chain
+              //this make sense for the partial fragments we get from PB & Nanopore
+              bool exonMatch2 = false;
+			  if (ichainMatch(super->qmrnas[i],super->rmrnas[j],exonMatch, fuzz_length) || ichainMatch(super->rmrnas[j],super->qmrnas[i],exonMatch2, fuzz_length)) {
                       //printf("made it to ichainMatch inner\n");
 				  //NB: also accepts the possibility that ref's i-chain be a subset of qry's i-chain
 				  super->qmrnas[i]->udata|=1;
@@ -898,7 +902,7 @@ void compareLoci2R(GList<GLocus>& loci, GList<GSuperLocus>& cmpdata,
 					  qlocus->ichainATP++;
 					  rlocus->ichainATP++;
 				  }
-				  if (exonMatch) {
+				  if (exonMatch || exonMatch2) {
 					  super->mrnaATP++;
 					  qlocus->mrnaATP++;
 					  rlocus->mrnaATP++;
