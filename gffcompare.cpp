@@ -620,10 +620,10 @@ bool ichainMatch(GffObj* t, GffObj* r, bool& exonMatch, int fuzz=0) {
     }
   //if we made it here, we have matching intron chains up to MIN(imax,jmax)
   if (!exmism) {
-            //CW UPDATE 20190501 dont care about exons anymore as long as introns match
           //check terminal exons:
-          //exonMatch = ( abs((int)(r->exons[0]->start - t->exons[0]->start))<=fuzz &&
-          //     abs((int)(r->exons[imax]->end - t->exons[jmax]->end))<=fuzz );
+            //CW UPDATE 20190501 dont care about exons anymore as long as introns match
+          /*exonMatch = ( abs((int)(r->exons[0]->start - t->exons[0]->start))<=fuzz &&
+               abs((int)(r->exons[imax]->end - t->exons[jmax]->end))<=fuzz );*/
           exonMatch = true;
           }
         // else exonMatch is false
@@ -664,7 +664,6 @@ void compareLoci2R(GList<GLocus>& loci, GList<GSuperLocus>& cmpdata,
    GLocus* locus=loci[l];
    locus->creset();
    for (int j=0;j<refloci.Count();j++) {
-     //if (refloci[j]->start>locus->end) break;
      if (refloci[j]->start>locus->end) {
          if (refloci[j]->start > locus->end + GFF_MAX_LOCUS) break;
          continue;
@@ -764,6 +763,7 @@ void compareLoci2R(GList<GLocus>& loci, GList<GSuperLocus>& cmpdata,
 		  //--- overlap here between quexons[i] and ruexons[j]
 		  qexovl[i]++;
 		  rexovl[j]++;
+      //CW 20190501 uncommented and now using fuzz_length rather than 5 
 		  if (exon_match(super->quexons[i], super->ruexons[j],fuzz_length)) {
 			  if (!ATPfound) { //count a ref approx match only once
 				  super->exonATP++;

@@ -436,6 +436,8 @@ bool tMatch(GffObj& a, GffObj& b, int& ovlen, bool relaxed_singleExonMatch, bool
 	if ( a.exons[imax]->end < b.exons[0]->start ||
 		b.exons[jmax]->end < a.exons[0]->start )
 		return false; //intron chains do not overlap at all
+	//if ( a.exons[imax]->start < b.exons[0]->end ||
+    //	b.exons[jmax]->start < a.exons[0]->end )
 	//check intron overlaps
 	ovlen=a.exons[0]->end - (GMAX(a.start,b.start))+1;
 	ovlen+=(GMIN(a.end,b.end))-a.exons.Last()->start;
