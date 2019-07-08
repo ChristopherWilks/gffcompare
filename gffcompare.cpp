@@ -378,7 +378,7 @@ int main(int argc, char* argv[]) {
     haveRefs=true;
     if (gtf_tracking_verbose) GMessage("Loading reference transcripts..\n");
     read_mRNAs(f_ref, ref_data, &ref_data, true, -1, s.chars(),
-    		(multiexonrefs_only || multiexon_only), readQuerySameAsRef);
+    		(multiexonrefs_only || multiexon_only), true);
     haveRefs=(ref_data.Count()>0);
     //if (gtf_tracking_verbose) GMessage("..reference annotation loaded\n");
   }
