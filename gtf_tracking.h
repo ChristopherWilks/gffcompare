@@ -798,6 +798,8 @@ public:
 		mrnaAFP=total_qmrnas-mrnaATP;
 		mrnaAFN=total_rmrnas-mrnaATP;
 		// locus/gene level:
+		locusFP=total_qloci-locusQTP;
+		locusFN=total_rloci-locusTP;
 	}
 
     void addStats(GSuperLocus& s) {
