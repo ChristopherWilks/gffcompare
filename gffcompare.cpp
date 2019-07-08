@@ -27,10 +27,12 @@ gffcompare [-r <reference_mrna.gtf> [-R]] [-T] [-V] [-s <seq_path>]\n\
     of GTF files should be processed)\n\
 \n\
  -r reference annotation file (GTF/GFF)\n\
+ -a force reference & queries to be treated same when reading in (filtered the same)\n\
+    this includes deduping of query mRNAs on reading in, even when in annotation mode\n\
  --strict-match : the match code '=' is only assigned when all exon boundaries\n\
     match; code '~' is assigned for intron chain match or single-exon\n\
  --fuzz-length : the length allowed for approximate exon/intron end matching\n\
-    (default: 5)\n\
+    (default: 20)\n\
 \n\
  -R for -r option, consider only the reference transcripts that\n\
     overlap any of the input transfrags (Sn correction)\n\
@@ -93,11 +95,12 @@ bool keepRefMatching=false; //-K with -C/-A/-X
 bool allowIntronSticking=false; //-X option
 bool reduceRefs=false; //-R
 bool reduceQrys=false; //-Q
+bool readQuerySameAsRef=false; //-a
 bool checkFasta=false;
 bool tmapFiles=true;
 //controls by how much distance exon/intron coordinates
 //can be off and still count as an approximate match
-int fuzz_length = 20;
+int fuzz_length = 20; //--fuzz-length
 //ref gene_id or gene_name values are separated by '|' (pipe character) when
 //appended to the original gene_id
 //gene_name values are separated by ',' (comma) in the gene_name attribute
@@ -243,8 +246,8 @@ int main(int argc, char* argv[]) {
 #endif
 
   GArgs args(argc, argv,
-		  "version;help;debug;gids;gidnames;gnames;no-merge;strict-match;"
-		  "chr-stats;vACDSGEFJKLMNQTVRXhp:e:d:s:i:n:r:o:");
+		  "version;help;debug;gids;gidnames;gnames;no-merge;strict-match;fuzz-length="
+		  "chr-stats;vACDSGEFJKLMNQTVRXhpa:e:d:s:i:n:r:o:");
   int e;
   if ((e=args.isError())>0) {
     show_usage();
@@ -333,6 +336,7 @@ int main(int argc, char* argv[]) {
   if (!s.is_empty()) loadRefDescr(s.chars());
   reduceRefs=(args.getOpt('R')!=NULL);
   reduceQrys=(args.getOpt('Q')!=NULL);
+  readQuerySameAsRef=(args.getOpt('a')!=NULL);
 
   //if a full pathname is given
   //the other common output files will still be created in the current directory:
@@ -374,7 +378,7 @@ int main(int argc, char* argv[]) {
     haveRefs=true;
     if (gtf_tracking_verbose) GMessage("Loading reference transcripts..\n");
     read_mRNAs(f_ref, ref_data, &ref_data, true, -1, s.chars(),
-    		(multiexonrefs_only || multiexon_only));
+    		(multiexonrefs_only || multiexon_only), readQuerySameAsRef);
     haveRefs=(ref_data.Count()>0);
     //if (gtf_tracking_verbose) GMessage("..reference annotation loaded\n");
   }
@@ -482,7 +486,11 @@ int main(int argc, char* argv[]) {
     //if (keepRefMatching) {
     //  discard_check=0;
     //}
-    read_mRNAs(f_in, *pdata, &ref_data, !gffAnnotate, fi, in_file.chars(), multiexon_only);
+    //read_mRNAs(f_in, *pdata, &ref_data, !gffAnnotate, fi, in_file.chars(), multiexon_only);
+    //read_mRNAs(f_in, *pdata, &ref_data, true, fi, in_file.chars(), multiexon_only);
+    //CW UPDATE 20190708 allow for the forcing of deduping of query mRNAs (need to make this equivalent
+    //to what happens with reference mRNAs for certain runs)
+    read_mRNAs(f_in, *pdata, &ref_data, (!gffAnnotate || readQuerySameAsRef), fi, in_file.chars(), multiexon_only, readQuerySameAsRef);
     GSuperLocus gstats;
     GFaSeqGet *faseq=NULL;
     for (int g=0;g<pdata->Count();g++) { //for each genomic sequence

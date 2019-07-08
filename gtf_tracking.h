@@ -1330,7 +1330,7 @@ int parse_mRNAs(GfList& mrnas,
 //reading a mRNAs from a gff file and grouping them into loci
 void read_mRNAs(FILE* f, GList<GSeqData>& seqdata, GList<GSeqData>* ref_data=NULL,
               bool discardDups=false, int qfidx=-1, const char* fname=NULL,
-              bool only_multiexon=false);
+              bool only_multiexon=false, bool isRefData=false);
 
 void read_transcripts(FILE* f, GList<GSeqData>& seqdata,
 #ifdef CUFFLINKS

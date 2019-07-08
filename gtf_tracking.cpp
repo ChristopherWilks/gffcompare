@@ -669,7 +669,7 @@ void sort_GSeqs_byName(GList<GSeqData>& seqdata) {
 }
 
 void read_mRNAs(FILE* f, GList<GSeqData>& seqdata, GList<GSeqData>* ref_data,
-	         bool discardDups, int qfidx, const char* fname, bool only_multiexon) {
+	         bool discardDups, int qfidx, const char* fname, bool only_multiexon, bool isRefData) {
 			 //bool intron_poking, bool keep_dups) {
 	//>>>>> read all transcripts/features from a GTF/GFF3 file
 	//int imrna_counter=0;
@@ -679,7 +679,9 @@ void read_mRNAs(FILE* f, GList<GSeqData>& seqdata, GList<GSeqData>* ref_data,
 #endif
 	int loci_counter=0;
 	if (ref_data==NULL) ref_data=&seqdata;
-	bool isRefData=(&seqdata==ref_data);
+    //CW 20150708 want direct control over this in the case
+    //where we want exact same handling of ref & query in filtering/reading in
+	//bool isRefData=(&seqdata==ref_data);
 	                          //(f, transcripts_only)
 	GffReader* gffr=new GffReader(f, true); //load only transcript annotations
 	gffr->showWarnings(gtf_tracking_verbose);
