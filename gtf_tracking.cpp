@@ -503,14 +503,14 @@ void cluster_mRNAs(GList<GffObj> & mrnas, GList<GLocus> & loci, int qfidx) {
 	//return rdisc;
 }
 
-void gatherRefLocOvls(GffObj& m, GLocus& rloc) {
+void gatherRefLocOvls(GffObj& m, GLocus& rloc, int fuzz_length) {
 	if (m.start>rloc.end || m.end<rloc.start) {
 		return; //nothing to do
 	}
 	for (int i=0;i<rloc.mrnas.Count();i++) {
 		GffObj* r=rloc.mrnas[i];
 		int olen=0;
-		char ovlcode=getOvlCode(m,*r,olen);
+		char ovlcode=getOvlCode(m,*r,olen, strictMatching, fuzz_length);
 		if (ovlcode!=0) { //has some sort of overlap with r
 			((CTData*)m.uptr)->addOvl(ovlcode,r,olen);
 			//if (classcode_rank(olen>ovlen) { ovlen=olen; rovl=r; }

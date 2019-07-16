@@ -2091,7 +2091,7 @@ void findTRMatch(GTrackLocus& loctrack, int qcount, GLocus& rloc) {
 					if (rmatch==NULL) //&& ((CTData*)qt.uptr)->ovls.Count()==0)
 						{
 						//not an ichain match, look for other codes
-						gatherRefLocOvls(qt, rloc);
+						gatherRefLocOvls(qt, rloc, fuzz_length);
 					}
 				}
 			}

@@ -348,7 +348,7 @@ public:
 	GXSeg(uint s=0, uint e=0, int f=0):GSeg(s,e),flags(f) { }
 };
 
-void gatherRefLocOvls(GffObj& m, GLocus& rloc);
+void gatherRefLocOvls(GffObj& m, GLocus& rlocm, int fuzz_length = 0);
 
 bool intronChainMatch(GffObj &a, GffObj &b);
 
