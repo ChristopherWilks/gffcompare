@@ -405,12 +405,13 @@ int parse_mRNAs(GfList& mrnas,
 }
 
 
-bool tMatch(GffObj& a, GffObj& b, int& ovlen, bool relaxed_singleExonMatch, bool contain_only) {
+bool tMatch(GffObj& a, GffObj& b, int& ovlen, bool relaxed_singleExonMatch, bool contain_only, bool skip_single_exons) {
 	//strict intron chain match, or single-exon match
 	int imax=a.exons.Count()-1;
 	int jmax=b.exons.Count()-1;
 	ovlen=0;
 	if (imax!=jmax) return false; //different number of exons
+    if (skip_single_exons && (imax==0 || jmax==0)) return false;
 	if (imax==0) { //single-exon mRNAs
 		if (contain_only) { //require strict boundary containment (a in b or b in a)
 			//but also that at least 80% of the largest one be covered

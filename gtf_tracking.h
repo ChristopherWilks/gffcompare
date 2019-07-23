@@ -1347,7 +1347,7 @@ void sort_GSeqs_byName(GList<GSeqData>& seqdata);
 
 //strict intron chain match, or single-exon match
 bool tMatch(GffObj& a, GffObj& b, int& ovlen, bool fuzzunspl=false,
-           bool contain_only=false);
+           bool contain_only=false, bool skip_single_exons=true);
 
 //use qsearch to "position" a given coordinate x within a list of transcripts sorted
 //by their start (lowest) coordinate;

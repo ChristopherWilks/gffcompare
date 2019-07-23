@@ -2062,6 +2062,8 @@ void findTRMatch(GTrackLocus& loctrack, int qcount, GLocus& rloc) {
 		for (int qi=0;qi<loctrack[q]->Count();qi++) { // for each transcript in q dataset
 			//if (loctrack[q]->cl[qi]->exons.Count()<2) continue; //skip single-exon transcripts
 			GffObj& qt=*(loctrack[q]->Get(qi));
+            //CWILKS re-enabled skipping of single exons 2019/7
+			//if (qt.exons.Count()<2) continue; //skip single-exon transcripts
 			CTData* qtdata=(CTData*)qt.uptr;
 			GffObj* rmatch=NULL; //== ref match for this row
 			int rovlen=0;
