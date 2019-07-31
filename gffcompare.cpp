@@ -246,8 +246,8 @@ int main(int argc, char* argv[]) {
 #endif
 
   GArgs args(argc, argv,
-		  "version;help;debug;gids;gidnames;gnames;no-merge;strict-match;fuzz-length="
-		  "chr-stats;vACDSGEFJKLMNQTVRXhpa:e:d:s:i:n:r:o:");
+		  "version;help;debug;gids;gidnames;gnames;no-merge;strict-match;fuzz-length=;"
+		  "chr-stats;vACDSGEFJKLMNQTVRXhp:a:e:d:s:i:n:r:o:");
   int e;
   if ((e=args.isError())>0) {
     show_usage();

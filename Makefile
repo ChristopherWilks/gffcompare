@@ -1,4 +1,4 @@
-GCLIB := $(if $(GCLIB),$(GCLIB),../gclib)
+GCLIB := $(if $(GCLIB),$(GCLIB),../gclib_mine)
 
 INCDIRS := -I${GCLIB}
 
