@@ -889,6 +889,8 @@ void compareLoci2R(GList<GLocus>& loci, GList<GSuperLocus>& cmpdata,
 				  super->ichainTP++;
 				  qlocus->ichainTP++;
 				  rlocus->ichainTP++;
+                  //CW 7/31/2019 to print out the matching ref/query transfrags for ichain EXACT matches
+                  fprintf(stdout,"icEMATCH\t%s\t%s\t%d\n",((CTData*)super->rmrnas[j]->uptr)->mrna->getID(),((CTData*)super->qmrnas[i]->uptr)->mrna->getID(),((CTData*)super->qmrnas[i]->uptr)->mrna->exons.Count());
 				  /*super->ichainATP++;
 				  qlocus->ichainATP++;
 				  rlocus->ichainATP++;*/
@@ -912,6 +914,8 @@ void compareLoci2R(GList<GLocus>& loci, GList<GSuperLocus>& cmpdata,
 					  super->ichainATP++;
 					  qlocus->ichainATP++;
 					  rlocus->ichainATP++;
+                      //CW 7/31/2019 to print out the matching ref/query transfrags for ichain FUZZY matches
+                      fprintf(stdout,"icFMATCH\t%s\t%s\t%d\n",((CTData*)super->rmrnas[j]->uptr)->mrna->getID(),((CTData*)super->qmrnas[i]->uptr)->mrna->getID(),((CTData*)super->qmrnas[i]->uptr)->mrna->exons.Count());
 				  }
 				  if (exonMatch || exonMatch2) {
 					  super->mrnaATP++;
