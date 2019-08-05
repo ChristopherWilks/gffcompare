@@ -572,6 +572,9 @@ bool ichainMatch(GffObj* t, GffObj* r, bool& exonMatch, int fuzz=0) {
   exonMatch=false;
   int imax=r->exons.Count()-1;
   int jmax=t->exons.Count()-1;
+  //CW 8/5/2019: change for debugging to force chains to be same length
+  if(imax != jmax)
+     return false;
   if (imax==0 || jmax==0) {   //single-exon mRNAs
      if (imax!=jmax) return false;
      exonMatch=r->exons[0]->coordMatch(t->exons[0],fuzz);
@@ -605,6 +608,8 @@ bool ichainMatch(GffObj* t, GffObj* r, bool& exonMatch, int fuzz=0) {
       return false;
       }
   //from now on we expect intron matches up to imax
+  if(i != j)
+      return false;
   if (i!=j || imax!=jmax) { 
       exmism=true; //not all introns match, so obviously there's "exon" mismatch
       //FIXME: fuzz!=0 determines acceptance of *partial* chain match 
@@ -908,20 +913,20 @@ void compareLoci2R(GList<GLocus>& loci, GList<GSuperLocus>& cmpdata,
 			  //if (ichainMatch(super->qmrnas[i],super->rmrnas[j],exonMatch, fuzz_length)) {
                       //printf("made it to ichainMatch inner\n");
 				  //NB: also accepts the possibility that ref's i-chain be a subset of qry's i-chain
-				  super->qmrnas[i]->udata|=1;
-				  amatched_refs[j]++;
 				  if (super->qmrnas[i]->exons.Count()>1) {
+				      super->qmrnas[i]->udata|=1;
+				      amatched_refs[j]++;
 					  super->ichainATP++;
 					  qlocus->ichainATP++;
 					  rlocus->ichainATP++;
                       //CW 7/31/2019 to print out the matching ref/query transfrags for ichain FUZZY matches
                       fprintf(stdout,"icFMATCH\t%s\t%s\t%d\n",((CTData*)super->rmrnas[j]->uptr)->mrna->getID(),((CTData*)super->qmrnas[i]->uptr)->mrna->getID(),((CTData*)super->qmrnas[i]->uptr)->mrna->exons.Count());
 				  }
-				  if (exonMatch || exonMatch2) {
+				  /*if (exonMatch || exonMatch2) {
 					  super->mrnaATP++;
 					  qlocus->mrnaATP++;
 					  rlocus->mrnaATP++;
-				  }
+				  }*/
 			  }
 		  } //fuzzy match check
 	  } //ref loop
