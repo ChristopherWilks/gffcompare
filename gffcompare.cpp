@@ -572,6 +572,10 @@ bool ichainMatch(GffObj* t, GffObj* r, bool& exonMatch, int fuzz=0) {
   exonMatch=false;
   int imax=r->exons.Count()-1;
   int jmax=t->exons.Count()-1;
+  //CW UPDATE 2019/8 don't allow strictly only-overlapping ichains
+  if((r->exons[imax]->end < t->exons[jmax]->start && t->exons[0]->start > r->exons[0]->end) || 
+        (r->exons[imax]->start > t->exons[jmax]->end && t->exons[0]->end < r->exons[0]->start))
+     return false;
   if (imax==0 || jmax==0) {   //single-exon mRNAs
      if (imax!=jmax) return false;
      exonMatch=r->exons[0]->coordMatch(t->exons[0],fuzz);
